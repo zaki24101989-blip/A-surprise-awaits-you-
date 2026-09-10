@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Happy Birthday ✨</title>
+  <meta name="description" content="A premium animated birthday surprise page." />
+  
+  <!-- Fonts: Playfair Display (headings), Dancing Script (handwritten/script), Poppins (body) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700;800&family=Dancing+Script:wght@500;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  
+  <link rel="stylesheet" href="style.css" />
+</head>
+
+<body data-theme="gold">
+  
+  <!-- Ambient canvas layers: stars / sparkles / confetti / fireworks / cursor sparkle trail -->
+  <canvas id="bg-canvas"></canvas>
+  <canvas id="fx-canvas"></canvas>
+  
+  <!-- ===================== FULLSCREEN TOGGLE ===================== -->
+  <button class="fullscreen-toggle" id="fullscreenToggle" aria-label="Toggle fullscreen">⛶</button>
+  
+  <!-- ===================== VISITOR COUNTER (tiny, corner) ===================== -->
+  <div class="visitor-badge" id="visitorBadge" aria-hidden="true">
+    <span>👀</span> <span id="visitorCount">1</span> visits to this wish
+  </div>
+  
+  <!-- ===================== THEME SWITCHER ===================== -->
+  <div class="theme-switcher" id="themeSwitcher">
+    <button class="theme-dot" data-theme="pink" style="--swatch:#e88aa0" aria-label="Pink theme"></button>
+    <button class="theme-dot" data-theme="purple" style="--swatch:#9b7bd8" aria-label="Purple theme"></button>
+    <button class="theme-dot" data-theme="blue" style="--swatch:#5fa8e0" aria-label="Blue theme"></button>
+    <button class="theme-dot" data-theme="gold" style="--swatch:#e8b86d" aria-label="Gold theme"></button>
+    <button class="theme-dot" data-theme="dark" style="--swatch:#7c6cff" aria-label="Dark theme"></button>
+  </div>
+  
+  <!-- ===================== 1. LANDING / HERO ===================== -->
+  <section id="landing" class="screen landing">
+    <div class="landing-deco" aria-hidden="true">
+      <span class="balloon b1">🎈</span>
+      <span class="balloon b2">🎈</span>
+      <span class="balloon b3">🎈</span>
+      <span class="balloon b4">🎈</span>
+      <span class="balloon b5">🎈</span>
+    </div>
+    
+    <div class="landing-content">
+      <p class="eyebrow" id="landingEyebrow">a little something for</p>
+      <h1 class="landing-name" id="landingName">Name</h1>
+      <p class="landing-sub">A surprise is waiting behind this envelope</p>
+      
+      <button id="openSurpriseBtn" class="btn btn-primary btn-glow">
+        <span class="envelope-icon">🎁</span>
+        Click to Open Your Surprise
+      </button>
+    </div>
+    
+    <div class="scroll-cue" aria-hidden="true">
+      <span></span> scroll
+    </div>
+  </section>
+  
+  <!-- ===================== 2. BIRTHDAY GREETING ===================== -->
+  <section id="greeting" class="screen greeting">
+    <div class="glass-card greeting-card">
+      <h2 class="greeting-heading">
+        <span class="typewriter" id="greetingTitle"></span>
+      </h2>
+      <p class="greeting-age" id="greetingAge"></p>
+      <p class="greeting-message" id="greetingMessage"></p>
+    </div>
+  </section>
+  
+  <!-- ===================== 3. CUSTOM MESSAGE / SPECIAL WISHES ===================== -->
+  <section id="wishes" class="screen wishes">
+    <h2 class="section-title">Special Wishes <span class="accent-underline"></span></h2>
+    <div class="wishes-grid">
+      <div class="glass-card wish-card">
+        <h3>For you, today</h3>
+        <p id="specialWishes"></p>
+      </div>
+      <div class="glass-card wish-card">
+        <h3>A memory I hold onto</h3>
+        <p id="memoriesText"></p>
+      </div>
+    </div>
+  </section>
+  
+  <!-- ===================== 4. PHOTO GALLERY (REMOVED) ===================== -->
+  <section id="gallery" class="screen gallery-section" style="display:none;">
+    <h2 class="section-title">Moments Worth Keeping <span class="accent-underline"></span></h2>
+    <div class="gallery-grid" id="galleryGrid"><!-- injected by JS --></div>
+  </section>
+  
+  <!-- Lightbox -->
+  <div class="lightbox" id="lightbox">
+    <button class="lightbox-close" id="lightboxClose" aria-label="Close">&times;</button>
+    <button class="lightbox-nav lightbox-prev" id="lightboxPrev" aria-label="Previous">&#10094;</button>
+    <img id="lightboxImg" src="" alt="">
+    <button class="lightbox-nav lightbox-next" id="lightboxNext" aria-label="Next">&#10095;</button>
+  </div>
+  
+  <!-- ===================== 7. ANIMATED LETTER ===================== -->
+  <section id="letter" class="screen letter-section">
+    <h2 class="section-title">A Letter, Just for You <span class="accent-underline"></span></h2>
+    <div class="envelope-wrap">
+      <div class="envelope" id="envelope">
+        <div class="envelope-back"></div>
+        <div class="envelope-letter" id="envelopeLetter">
+          <p id="letterText" class="handwritten"></p>
+        </div>
+        <div class="envelope-flap"></div>
+        <div class="envelope-seal" id="envelopeSeal">💌</div>
+      </div>
+      <p class="envelope-hint">tap the envelope to open</p>
+    </div>
+  </section>
+  
+  <!-- ===================== 8. REASONS SECTION (REMOVED) ===================== -->
+  <section id="reasons" class="screen reasons-section" style="display:none;">
+    <h2 class="section-title">10 Reasons You're Amazing <span class="accent-underline"></span></h2>
+    <div class="reasons-grid" id="reasonsGrid"><!-- injected by JS --></div>
+  </section>
+  
+  <!-- ===================== 10. SURPRISE BUTTON ===================== -->
+  <section id="surprise" class="screen surprise-section">
+    <button id="oneMoreSurpriseBtn" class="btn btn-primary btn-glow">One More Surprise ❤️</button>
+    
+    <!-- Gift box reveal -->
+    <div class="gift-box-wrap">
+      <p class="gift-hint">…or open this instead</p>
+      <button id="giftBox" class="gift-box" aria-label="Open gift box">🎁</button>
+      <p id="giftMessage" class="gift-message hidden"></p>
+    </div>
+  </section>
+  
+  <!-- Surprise Popup Modal -->
+  <div class="modal-overlay" id="surpriseModal">
+    <div class="modal glass-card">
+      <button class="modal-close" id="surpriseModalClose" aria-label="Close">&times;</button>
+      <img id="surpriseGif" class="surprise-gif" src="assets/images/surprise.gif" alt="Celebration" loading="lazy">
+      <p id="surpriseMessage" class="surprise-message"></p>
+    </div>
+  </div>
+  
+  <!-- ===================== CLOSING ===================== -->
+  <section id="closing" class="screen closing-section">
+    <p class="closing-quote" id="aiQuote"></p>
+    <h2 class="closing-message" id="closingMessage"></h2>
+    <div class="floating-cake" aria-hidden="true">🎂</div>
+  </section>
+  
+  <!-- ===================== FOOTER ===================== -->
+  <footer class="footer">
+    <p id="footerSignature"></p>
+  </footer>
+  
+  <script src="script.js"></script>
+</body>
+
+</html>
